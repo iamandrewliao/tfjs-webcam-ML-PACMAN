@@ -55,4 +55,16 @@ export class ControllerDataset {
       y.dispose();
     }
   }
+
+
+
+  clearDataset() {
+    // TODO: clear by label
+    if (this.xs) {
+      this.xs.dispose();
+      this.ys.dispose();
+      this.xs = null;
+      this.ys = null;
+    }
+  }
 }

@@ -29,7 +29,7 @@ const NUM_CLASSES = 4;
 let webcam;
 
 // The dataset object where we will store activations.
-const controllerDataset = new ControllerDataset(NUM_CLASSES);
+const controllerDataset = new ControllerDataset(NUM_CLASSES); 
 
 let truncatedMobileNet;
 let model;
@@ -175,6 +175,10 @@ document.getElementById('predict').addEventListener('click', () => {
   ui.startPacman();
   isPredicting = true;
   predict();
+});
+document.getElementById('clear').addEventListener('click', () => {
+  controllerDataset.clearDataset();
+  // TODO: empty the picture displayed on the button; change the number of samples
 });
 
 async function init() {
