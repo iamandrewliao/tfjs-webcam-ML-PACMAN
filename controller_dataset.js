@@ -56,10 +56,7 @@ export class ControllerDataset {
     }
   }
 
-
-
   clearDataset() {
-    // TODO: clear by label
     if (this.xs) {
       this.xs.dispose();
       this.ys.dispose();
@@ -67,4 +64,41 @@ export class ControllerDataset {
       this.ys = null;
     }
   }
+
+
+  // tried to implement clear by label, but have not been working
+
+  // clearDatasetByLabel(label) {
+  //   const y_toRemove = tf.tidy(
+  //     () => tf.oneHot(tf.tensor1d([label]).toInt(), this.numClasses));
+  //   const indicesToRemove = [];
+
+  //   for (let i = 0; i < this.ys.length; i++) {
+  //     const y = this.ys[i];
+  //     if (y === y_toRemove) {
+  //       indicesToRemove.push(i);
+  //       y.dispose(); // Dispose of the label tensor
+  //     }
+  //   }
+
+  //   this.xs = this.xs.filter((_, index) => !indicesToRemove.includes(index));
+  //   this.ys = this.ys.filter((_, index) => !indicesToRemove.includes(index));
+  // }
+
+  // clearDatasetByLabel(label) {
+  //   const indicesToRemove = [];
+  //   for (let i = 0; i < this.ys.length; i++) {
+  //     const y = this.ys[i];
+  //     const labelTensor = y.argMax();
+  //     const labelValue = labelTensor.dataSync()[0];
+  //     if (labelValue === label) {
+  //       indicesToRemove.push(i);
+  //       y.dispose(); // Dispose of the label tensor
+  //     }
+  //     labelTensor.dispose();
+  //   }
+
+  //   this.xs = this.xs.filter((_, index) => !indicesToRemove.includes(index));
+  //   this.ys = this.ys.filter((_, index) => !indicesToRemove.includes(index));
+  // }
 }

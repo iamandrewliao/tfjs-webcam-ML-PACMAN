@@ -20,6 +20,7 @@ import * as tfd from '@tensorflow/tfjs-data';
 
 import {ControllerDataset} from './controller_dataset';
 import * as ui from './ui';
+import { totals } from './ui.js';
 
 // The number of classes we want to predict. In this example, we will be
 // predicting 4 classes for up, down, left, and right.
@@ -33,6 +34,8 @@ const controllerDataset = new ControllerDataset(NUM_CLASSES);
 
 let truncatedMobileNet;
 let model;
+
+const CONTROLS = ['up', 'down', 'left', 'right'];
 
 // Loads mobilenet and returns a model that returns the internal activation
 // we'll use as input to our classifier model.
@@ -178,8 +181,24 @@ document.getElementById('predict').addEventListener('click', () => {
 });
 document.getElementById('clear').addEventListener('click', () => {
   controllerDataset.clearDataset();
+  // controllerDataset.clearDatasetByLabel(0);
   // TODO: empty the picture displayed on the button; change the number of samples
+  resetInterface();
 });
+
+async function resetInterface() {
+  // reset the number of instances in each class to 0
+  for (let i = 0; i < CONTROLS.length; ++i) {
+    const className = CONTROLS[i];
+    const total = document.getElementById(className + '-total');
+    total.innerText = 0;
+
+    // reset ui.totals to [0,0,0,0]
+    // Tried totals = [0,0,0,0] outside of the loop, did not work. I wonder why.
+    totals[i] = 0;
+  }
+  // TODO: maybe reset the appearance of 4 buttons
+}
 
 async function init() {
   try {

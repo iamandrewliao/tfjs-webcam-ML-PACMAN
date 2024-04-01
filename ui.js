@@ -17,6 +17,7 @@
 import * as tf from '@tensorflow/tfjs';
 
 const CONTROLS = ['up', 'down', 'left', 'right'];
+// export default CONTROLS;
 const CONTROL_CODES = [38, 40, 37, 39];
 
 export function init() {
@@ -64,7 +65,8 @@ export function setExampleHandler(handler) {
   addExampleHandler = handler;
 }
 let mouseDown = false;
-const totals = [0, 0, 0, 0];
+let totals = [0, 0, 0, 0];
+export { totals };
 
 const upButton = document.getElementById('up');
 const downButton = document.getElementById('down');
