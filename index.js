@@ -122,6 +122,12 @@ async function train() {
     callbacks: {
       onBatchEnd: async (batch, logs) => {
         ui.trainStatus('Loss: ' + logs.loss.toFixed(5));
+      },
+      onTrainEnd: () => {
+        // Set the text of the button to "Complete" when training is done.
+        ui.trainStatus('Training completed!');
+        // ui.trainStatus('Training complete! Loss: ' + logs.loss.toFixed(5));
+        // if want loss: additional variable
       }
     }
   });
