@@ -1,3 +1,8 @@
+# Improving the ML Pacman interface by adding a testing/model debugging phase and other helpful features  
+by Andrew Liao & Jiahao He for CSCI8980-003 Spring 2024 @ UMN  
+  
+Presentation: https://docs.google.com/presentation/d/1R3daoh22AAEVUuRB45CSwS-hIksUsQWCb7_6SjLoRxs/edit?usp=sharing  
+Video demo: https://drive.google.com/file/d/1AHqU3J6MF3bi3qVuFxLNKW7Z9m2H4IB3/view?usp=drive_link  
 # Play Pac-Man using Gestures: Teach an ML model to read your gestures in your web browser
 
 In this project, an ML model will predict directions from an image in web camera.
