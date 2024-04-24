@@ -65,6 +65,7 @@ export function setExampleHandler(handler) {
 }
 let mouseDown = false;
 const totals = [0, 0, 0, 0];
+export { totals };
 
 const upButton = document.getElementById('up');
 const downButton = document.getElementById('down');

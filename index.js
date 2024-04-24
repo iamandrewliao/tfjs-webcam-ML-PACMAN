@@ -20,6 +20,7 @@ import * as tfd from '@tensorflow/tfjs-data';
 
 import {ControllerDataset} from './controller_dataset';
 import * as ui from './ui';
+import { totals } from './ui.js';
 
 // The number of classes we want to predict. In this example, we will be
 // predicting 4 classes for up, down, left, and right.
@@ -33,6 +34,8 @@ const controllerDataset = new ControllerDataset(NUM_CLASSES);
 
 let truncatedMobileNet;
 let model;
+
+const CONTROLS = ['up', 'down', 'left', 'right'];
 
 // Loads mobilenet and returns a model that returns the internal activation
 // we'll use as input to our classifier model.
@@ -119,6 +122,12 @@ async function train() {
     callbacks: {
       onBatchEnd: async (batch, logs) => {
         ui.trainStatus('Loss: ' + logs.loss.toFixed(5));
+      },
+      onTrainEnd: () => {
+        // Set the text of the button to "Complete" when training is done.
+        ui.trainStatus('Training completed!');
+        // ui.trainStatus('Training complete! Loss: ' + logs.loss.toFixed(5));
+        // if want loss: additional variable
       }
     }
   });
@@ -176,6 +185,53 @@ document.getElementById('predict').addEventListener('click', () => {
   isPredicting = true;
   predict();
 });
+
+document.getElementById('clear').addEventListener('click', () => {
+  controllerDataset.clearDataset();
+  // controllerDataset.clearDatasetByLabel(0);
+  resetInterface();
+});
+document.getElementById('up-clear').addEventListener('click', () => {
+  resetInterfaceByLabel(0);
+  controllerDataset.clearDatasetByLabel(0);
+});
+document.getElementById('down-clear').addEventListener('click', () => {
+  resetInterfaceByLabel(1);
+  controllerDataset.clearDatasetByLabel(1);
+});
+document.getElementById('left-clear').addEventListener('click', () => {
+  resetInterfaceByLabel(2);
+  controllerDataset.clearDatasetByLabel(2);
+});
+document.getElementById('right-clear').addEventListener('click', () => {
+  resetInterfaceByLabel(3);
+  controllerDataset.clearDatasetByLabel(3);
+});
+
+
+async function resetInterface() {
+  // reset the number of instances in each class to 0
+  for (let i = 0; i < CONTROLS.length; ++i) {
+    const className = CONTROLS[i];
+    const total = document.getElementById(className + '-total');
+    total.innerText = 0;
+
+    // reset ui.totals to [0,0,0,0]
+    // Tried totals = [0,0,0,0] outside of the loop, did not work. I wonder why.
+    totals[i] = 0;
+  }
+  // TODO: maybe reset the appearance of 4 buttons
+}
+
+async function resetInterfaceByLabel(label) {
+  // reset the number of instances in the class specified by the label to 0
+  const className = CONTROLS[label];
+  const total = document.getElementById(className + '-total');
+  total.innerText = 0;
+
+  // reset ui.totals[label] to 0
+  totals[label] = 0;
+}
 
 //functions for testing section
 let testTotal = 0;
