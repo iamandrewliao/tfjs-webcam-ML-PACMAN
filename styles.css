@@ -315,11 +315,8 @@ span.section_header {
   color: white;
   margin-top: 5px;
   margin-bottom: 10px;
-  font-size: 22px;
+  font-size: 24px;
   text-align: center;
-}
-#prediction-result {
-  margin-top: 7px;
 }
 #true-label-options {
   display: grid;
@@ -334,6 +331,28 @@ button.control-button {
   display: block;
   font-size: 19px;
   font-weight: 200;
+}
+button.control-button:active{
+  background-color: #c94f1a;
+}
+#prediction-result {
+  margin-top: 7px;
+}
+#summaryStats {
+  margin-top: 20px;
+}
+.ineedspace {
+  margin: 10px;
+}
+#summaryStatsPanel {
+  border-left: 1px dashed #565656;
+  padding: 0 22px 0 13px;
+  width: 420px;
+  display: none;
+}
+.acc {
+  color: white;
+  font-size: 20px;
 }
 
 /** Joystick panel. **/

@@ -178,7 +178,7 @@ document.getElementById('predict').addEventListener('click', () => {
 });
 
 //functions for testing section
-let testTotal=0;
+let testTotal = 0;
 let test_imgs = {};
 
 async function predictImage() {  // helper function
@@ -236,6 +236,65 @@ function displayPrediction(classId) {
   predictionResultElement.textContent = className;
 }
 
+function summaryStats() {
+  let up_count = 0;
+  let down_count = 0;
+  let left_count = 0;
+  let right_count = 0;
+  let up_wrong = 0;
+  let down_wrong = 0;
+  let left_wrong = 0;
+  let right_wrong = 0;
+  for(let img in test_imgs){
+    if(test_imgs[img]['trueLabel'] == 'UP'){
+      up_count += 1;
+      if(test_imgs[img]['prediction'] != test_imgs[img]['trueLabel']){
+        up_wrong += 1;
+      }
+    }
+    if(test_imgs[img]['trueLabel'] == 'DOWN'){
+      down_count += 1;
+      if(test_imgs[img]['prediction'] != test_imgs[img]['trueLabel']){
+        down_wrong += 1;
+      }
+    }
+    if(test_imgs[img]['trueLabel'] == 'LEFT'){
+      left_count += 1;
+      if(test_imgs[img]['prediction'] != test_imgs[img]['trueLabel']){
+        left_wrong += 1;
+      }
+    }
+    if(test_imgs[img]['trueLabel'] == 'RIGHT'){
+      right_count += 1;
+      if(test_imgs[img]['prediction'] != test_imgs[img]['trueLabel']){
+        right_wrong += 1;
+      }
+    }
+  }
+  let up_acc = (up_count-up_wrong)/up_count;
+  let down_acc = (down_count-down_wrong)/down_count;
+  let left_acc = (left_count-left_wrong)/left_count;
+  let right_acc = (right_count-right_wrong)/right_count;
+  let up_acc_html = document.getElementById("up_acc");
+  let down_acc_html = document.getElementById("down_acc");
+  let left_acc_html = document.getElementById("left_acc");
+  let right_acc_html = document.getElementById("right_acc");
+  up_acc_html.textContent = 'UP: ' + String(up_acc.toFixed(2));
+  down_acc_html.textContent = 'DOWN: ' + String(down_acc.toFixed(2));
+  left_acc_html.textContent = 'LEFT: ' + String(left_acc.toFixed(2));
+  right_acc_html.textContent = 'RIGHT: ' + String(right_acc.toFixed(2));
+}
+
+function displayStats() {
+  let ssp = document.getElementById("summaryStatsPanel")
+  if (ssp.style.display === 'none') {
+    ssp.style.display = 'block';
+    summaryStats();
+  } else {
+    ssp.style.display = 'none';
+  }
+}
+
 function recordTrueLabel(trueLabel){
   test_imgs[testTotal]['trueLabel'] = trueLabel;
   console.log(test_imgs);
@@ -259,13 +318,14 @@ async function init() {
   const screenShot = await webcam.capture();
   truncatedMobileNet.predict(screenShot.expandDims(0));
   screenShot.dispose();
-
+  document.getElementById("summaryStatsPanel").style.display ="none";
   // testing section
   document.getElementById('test-capture').addEventListener('click', testImage); //webcam capture
   document.getElementById('up-button').addEventListener('click', () => recordTrueLabel('UP'));
   document.getElementById('down-button').addEventListener('click', () => recordTrueLabel('DOWN'));
   document.getElementById('left-button').addEventListener('click', () => recordTrueLabel('LEFT'));
   document.getElementById('right-button').addEventListener('click', () => recordTrueLabel('RIGHT'));
+  document.getElementById('summaryStats').addEventListener('click', displayStats);
 }
 
 // Initialize the application.
