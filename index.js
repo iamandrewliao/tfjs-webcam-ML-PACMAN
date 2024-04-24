@@ -382,6 +382,30 @@ async function init() {
   document.getElementById('left-button').addEventListener('click', () => recordTrueLabel('LEFT'));
   document.getElementById('right-button').addEventListener('click', () => recordTrueLabel('RIGHT'));
   document.getElementById('summaryStats').addEventListener('click', displayStats);
+  myButton.addEventListener(
+      "click",
+      function () {
+          myPopup.classList.add("show");
+      }
+  );
+  closePopup.addEventListener(
+      "click",
+      function () {
+          myPopup.classList.remove(
+              "show"
+          );
+      }
+  );
+  window.addEventListener(
+      "click",
+      function (event) {
+          if (event.target == myPopup) {
+              myPopup.classList.remove(
+                  "show"
+              );
+          }
+      }
+  );
 }
 
 // Initialize the application.

@@ -15,6 +15,33 @@
   <header>
     Control your PAC MAN via gestures in the camera! <img height="48" style="border: white;"
       src="./images/controller.png" /> <br />
+    <button id="myButton" style="margin-top: 8px; font-size: 18px;">Click here for helpful tips!</button>
+    <div id="myPopup" class="popup">
+        <div class="popup-content">
+            <h3 style="color: white">
+                TIPS:
+            </h3>
+            <ul style="color: white; font-size: 22px; line-height: 35px;">
+              <li>Make sure you have enough diversity between and within gesture classes
+                <ul style="font-size: 90%; line-height: 35px;">
+                  <li>
+                    This means ensuring each gesture is visually much different from the others and trying to capture each gesture in different positions, angles, etc.
+                  </li>
+                  <li>Not doing so may result in overfitting on the training data.</li>
+                </ul>
+              </li>
+              <li>
+                Try debugging your gestures in the testing section (optional)
+                <ul style="font-size: 90%; line-height: 35px;">
+                  <li>You may find that certain gestures are more troublesome than others!</li>
+                </ul>
+              </li>
+              <li>Increasing the number of pictures for each class can improve generalization of the model</li>
+              <li>Try modifying model parameters for a lower loss</li>
+            </ul>
+            <button id="closePopup" style="font-size: 20px;">close</button>
+        </div>
+    </div>
   </header>
   <div id="no-webcam">
     No webcam found. <br />
@@ -247,7 +274,7 @@
   <div class="big-buttons">
     <button id="clear">
       <img width="66" height="66" src="./images/button.svg" />
-      <span>CLEAR</span>
+      <span>CLEAR ALL</span>
     </button>
   </div>
 
@@ -275,9 +302,9 @@
         </div>
       </div>
 
-      <div class="panel ineedspace">
+      <div class="panel">
         <div class="subsection-header">Model prediction:
-          <div id="prediction-result"></div>
+          <div id="prediction-result" style="margin: 7px;"></div>
         </div>
         <div class="subsection-header">True label:</div>
         <div id="true-label-options">
@@ -286,8 +313,8 @@
           <button class="control-button" id="left-button">LEFT</button>
           <button class="control-button" id="right-button">RIGHT</button>
         </div>
-        <div class="big-buttons ineedspace">
-          <button id="summaryStats">
+        <div class="big-buttons" style="margin: 10px">
+          <button id="summaryStats" style="margin-top: 20px;">
             <img width="66" height="66" src="./images/button.svg" />
             <span>Get Summary Statistics</span>
           </button>
@@ -296,10 +323,10 @@
 
       <div class="panel" id="summaryStatsPanel">
         <div class="subsection-header">Accuracy by class:</div>
-        <div class="acc ineedspace" id="up_acc"></div>
-        <div class="acc ineedspace" id="down_acc"></div>
-        <div class="acc ineedspace" id="left_acc"></div>
-        <div class="acc ineedspace" id="right_acc"></div>
+        <div class="acc" id="up_acc" style="margin: 10px"></div>
+        <div class="acc" id="down_acc" style="margin: 10px"></div>
+        <div class="acc" id="left_acc" style="margin: 10px"></div>
+        <div class="acc" id="right_acc" style="margin: 10px"></div>
       </div>
       
   </div>
