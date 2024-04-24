@@ -122,6 +122,12 @@ async function train() {
     callbacks: {
       onBatchEnd: async (batch, logs) => {
         ui.trainStatus('Loss: ' + logs.loss.toFixed(5));
+      },
+      onTrainEnd: () => {
+        // Set the text of the button to "Complete" when training is done.
+        ui.trainStatus('Training completed!');
+        // ui.trainStatus('Training complete! Loss: ' + logs.loss.toFixed(5));
+        // if want loss: additional variable
       }
     }
   });
@@ -182,9 +188,25 @@ document.getElementById('predict').addEventListener('click', () => {
 document.getElementById('clear').addEventListener('click', () => {
   controllerDataset.clearDataset();
   // controllerDataset.clearDatasetByLabel(0);
-  // TODO: empty the picture displayed on the button; change the number of samples
   resetInterface();
 });
+document.getElementById('up-clear').addEventListener('click', () => {
+  resetInterfaceByLabel(0);
+  controllerDataset.clearDatasetByLabel(0);
+});
+document.getElementById('down-clear').addEventListener('click', () => {
+  resetInterfaceByLabel(1);
+  controllerDataset.clearDatasetByLabel(1);
+});
+document.getElementById('left-clear').addEventListener('click', () => {
+  resetInterfaceByLabel(2);
+  controllerDataset.clearDatasetByLabel(2);
+});
+document.getElementById('right-clear').addEventListener('click', () => {
+  resetInterfaceByLabel(3);
+  controllerDataset.clearDatasetByLabel(3);
+});
+
 
 async function resetInterface() {
   // reset the number of instances in each class to 0
@@ -198,6 +220,16 @@ async function resetInterface() {
     totals[i] = 0;
   }
   // TODO: maybe reset the appearance of 4 buttons
+}
+
+async function resetInterfaceByLabel(label) {
+  // reset the number of instances in the class specified by the label to 0
+  const className = CONTROLS[label];
+  const total = document.getElementById(className + '-total');
+  total.innerText = 0;
+
+  // reset ui.totals[label] to 0
+  totals[label] = 0;
 }
 
 async function init() {

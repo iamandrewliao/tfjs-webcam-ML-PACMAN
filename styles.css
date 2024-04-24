@@ -374,3 +374,9 @@ button#predict{
   padding: 30px;
   line-height: 30px;
 }
+
+
+/* my change */
+.clear-buttons span {
+  color: #f8f8f8;
+}

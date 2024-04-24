@@ -35,6 +35,7 @@ export class ControllerDataset {
     // One-hot encode the label.
     const y = tf.tidy(
         () => tf.oneHot(tf.tensor1d([label]).toInt(), this.numClasses));
+    console.log("One-hot encoding of adding. y:", y.array());
 
     if (this.xs == null) {
       // For the first example that gets added, keep example and y so that the
@@ -43,6 +44,7 @@ export class ControllerDataset {
       // disposed.
       this.xs = tf.keep(example);
       this.ys = tf.keep(y);
+      // console.log("checking this.ys:", this.ys[0]);
     } else {
       const oldX = this.xs;
       this.xs = tf.keep(oldX.concat(example, 0));
@@ -65,40 +67,63 @@ export class ControllerDataset {
     }
   }
 
+  getOneHotEncodedArrayAtIndex(index) {
+    return tf.tidy(() => {
+      const ysArray = this.ys.arraySync();
+      // console.log("One-hot encoded array:", ysArray);
+      return ysArray[index].indexOf(1);
+    });
+  }
 
-  // tried to implement clear by label, but have not been working
 
-  // clearDatasetByLabel(label) {
-  //   const y_toRemove = tf.tidy(
-  //     () => tf.oneHot(tf.tensor1d([label]).toInt(), this.numClasses));
-  //   const indicesToRemove = [];
+  // clear by label
 
-  //   for (let i = 0; i < this.ys.length; i++) {
-  //     const y = this.ys[i];
-  //     if (y === y_toRemove) {
-  //       indicesToRemove.push(i);
-  //       y.dispose(); // Dispose of the label tensor
-  //     }
-  //   }
+  clearDatasetByLabel(labelToDelete) {
+    if (!this.xs) {
+        console.log("Dataset is empty. Nothing to delete.");
+        return;
+    }
 
-  //   this.xs = this.xs.filter((_, index) => !indicesToRemove.includes(index));
-  //   this.ys = this.ys.filter((_, index) => !indicesToRemove.includes(index));
-  // }
+    const indicesToDelete = [];
+    const newXs = [];
+    const newYs = [];
 
-  // clearDatasetByLabel(label) {
-  //   const indicesToRemove = [];
-  //   for (let i = 0; i < this.ys.length; i++) {
-  //     const y = this.ys[i];
-  //     const labelTensor = y.argMax();
-  //     const labelValue = labelTensor.dataSync()[0];
-  //     if (labelValue === label) {
-  //       indicesToRemove.push(i);
-  //       y.dispose(); // Dispose of the label tensor
-  //     }
-  //     labelTensor.dispose();
-  //   }
+    // Iterate through each example and label
+    for (let i = 0; i < this.ys.shape[0]; i++) {
+        const label = this.getOneHotEncodedArrayAtIndex(i)
+        console.log("label:", label);
+        console.log("labelToDelete:", labelToDelete);
 
-  //   this.xs = this.xs.filter((_, index) => !indicesToRemove.includes(index));
-  //   this.ys = this.ys.filter((_, index) => !indicesToRemove.includes(index));
-  // }
+        // Check if the label matches the one to delete
+        if (label !== labelToDelete) {
+            // If not, keep the example and label
+            newXs.push(this.xs.slice([i, 0], [1, this.xs.shape[1]]));
+            newYs.push(this.ys.slice([i, 0], [1, this.ys.shape[1]]));
+        } else {
+            // If it matches, mark the index for deletion
+            console.log("Index marked for deletion:", i);
+            indicesToDelete.push(i);
+        }
+    }
+
+    console.log("Indices to delete:", indicesToDelete);
+
+    // Dispose of old tensors
+    this.xs.dispose();
+    this.ys.dispose();
+
+    // If there are examples left after deletion
+    if (newXs.length > 0) {
+        console.log("Remaining examples after deletion:", newXs.length);
+        // Concatenate remaining examples and labels
+        this.xs = tf.keep(tf.concat(newXs, 0));
+        this.ys = tf.keep(tf.concat(newYs, 0));
+    } else {
+        // If all examples were deleted, set to null
+        console.log("All examples with label deleted.");
+        this.xs = null;
+        this.ys = null;
+    }
+  }
 }
+
