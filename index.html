@@ -284,8 +284,7 @@
     </span>
     <div class="controller-panels">
       <div class="panel">
-        <div class="subsection-header">Click the true label every time you take an image
-        </div>
+        <div class="subsection-header" style="margin-bottom: 15px">Click the true label every time you take an image!</div>
         <div class="panel-row" id="test-col1">
           <div>
             <video autoplay playsinline muted id="test-webcam" width="224" height="224"></video>
@@ -303,9 +302,14 @@
       </div>
 
       <div class="panel">
-        <div class="subsection-header">Model prediction:
-          <div id="prediction-result" style="margin: 7px;"></div>
+        <div class="subsection-header">Image being tested:</div>
+        <div class="thumb-box-inner" style="margin-left: auto; margin-right: auto; margin-top: 5px; margin-bottom: 5px;">
+          <canvas class="thumb" width=224 height=224 id="test-thumb"></canvas>
         </div>
+        <div class="subsection-header">Model prediction:
+          <div id="prediction-result" style="margin-top: 10px;"></div>
+        </div>
+        <div id="true-label-reminder">Now click the true label</div>
         <div class="subsection-header">True label:</div>
         <div id="true-label-options">
           <button class="control-button" id="up-button">UP</button>

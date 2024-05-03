@@ -35,7 +35,7 @@ export class ControllerDataset {
     // One-hot encode the label.
     const y = tf.tidy(
         () => tf.oneHot(tf.tensor1d([label]).toInt(), this.numClasses));
-    console.log("One-hot encoding of adding. y:", y.array());
+    // console.log("One-hot encoding of adding. y:", y.array());
 
     if (this.xs == null) {
       // For the first example that gets added, keep example and y so that the

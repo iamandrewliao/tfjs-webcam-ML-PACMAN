@@ -362,6 +362,13 @@ span.section_header {
   font-size: 24px;
   text-align: center;
 }
+#true-label-reminder {
+  color: #ef6c00;
+  font-size: 20px;
+  text-align: center;
+  margin: 10px;
+  display: none;
+}
 #true-label-options {
   display: flex;
   gap: 10px;

@@ -259,17 +259,30 @@ async function predictImage() {  // helper function
   return classId
 }
 
-async function testImage() {  // predicts image, shows prediction, and updates count
+async function testImage() {  // predicts image, shows image and model prediction, and updates count
   // update number of test images collected (testTotal)
   testTotal+=1;
-  console.log('testTotal: ', testTotal)
-  let classId = await predictImage();
-  test_imgs[testTotal] = {};  //initialize dictionary
-  test_imgs[testTotal]['prediction'] = classIdtoName(classId); // update dictionary
-  // show model's prediction
-  displayPrediction(classId);
+  //console.log('testTotal: ', testTotal);
+  // update test total
   const testTotalElement = document.getElementById('test-total');
   testTotalElement.textContent = testTotal.toString() + " test images collected";
+  // update dictionary of test images and their predictions
+  let classId = await predictImage();
+  test_imgs[testTotal] = {};  // initialize dictionary
+  test_imgs[testTotal]['prediction'] = classIdtoName(classId); // update dictionary
+  // show image being tested
+  const img = await getImage();
+  const testCanvas = document.getElementById('test-thumb');
+  ui.draw(img, testCanvas);
+  img.dispose();
+  // show model's prediction
+  displayPrediction(classId);
+  // remind the user to enter the true label
+  let rmd = document.getElementById("true-label-reminder");
+  //console.log(rmd.style.display);
+  if (rmd.style.display === 'none') {
+    rmd.style.display = 'block';
+  }
 }
 
 function classIdtoName(classId){  // helper
@@ -342,7 +355,7 @@ function summaryStats() {
 }
 
 function displayStats() {
-  let ssp = document.getElementById("summaryStatsPanel")
+  let ssp = document.getElementById("summaryStatsPanel");
   if (ssp.style.display === 'none') {
     ssp.style.display = 'block';
     summaryStats();
@@ -353,7 +366,7 @@ function displayStats() {
 
 function recordTrueLabel(trueLabel){
   test_imgs[testTotal]['trueLabel'] = trueLabel;
-  console.log(test_imgs);
+  //console.log(test_imgs);
 }
 
 async function init() {
@@ -374,7 +387,8 @@ async function init() {
   const screenShot = await webcam.capture();
   truncatedMobileNet.predict(screenShot.expandDims(0));
   screenShot.dispose();
-  document.getElementById("summaryStatsPanel").style.display ="none";
+  document.getElementById("true-label-reminder").style.display = "none";
+  document.getElementById("summaryStatsPanel").style.display = "none";
   // testing section
   document.getElementById('test-capture').addEventListener('click', testImage); //webcam capture
   document.getElementById('up-button').addEventListener('click', () => recordTrueLabel('UP'));
